@@ -31,13 +31,6 @@ public class UseItem implements Listener {
 				return;
 			if (item.getAmount() > 1)
 				return;
-			
-			if (item.getItemMeta().getDisplayName() != null &&item.getItemMeta().getDisplayName().toLowerCase().contains("\'s infinity box".toLowerCase())) {
-				event.setCancelled(true);
-				player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_OPEN, 1, 1);
-				player.openInventory(Shulkerception.createShulkerBoxInventory(player.getInventory().getItemInMainHand()).getInventory());
-				return;
-			}
 			// test for Shulker Boxes that are renamed
 			if (!Shulkerception.useNamedBoxes || !Shulkerception.useFormattedNamedBoxes) {
 				ItemStack i = new ItemStack(item.getType());
@@ -53,7 +46,8 @@ public class UseItem implements Listener {
 			if (Shulkerception.supportedMaterials.contains(item.getType()) && (event.getAction() == Action.RIGHT_CLICK_AIR && player.isSneaking())) {
 				event.setCancelled(true);
 				player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_OPEN, 1, 1);
-				player.openInventory(Shulkerception.createShulkerBoxInventory(player.getInventory().getItemInMainHand()).getInventory());
+				//TODO getHeldItemSlot() should be getRawSlot
+				player.openInventory(Shulkerception.createShulkerBoxInventory(player.getInventory().getHeldItemSlot(), player.getInventory().getItemInMainHand()).getInventory());
 			}
 
 		}

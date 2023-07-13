@@ -64,6 +64,11 @@ public class InventoryImpl implements Inventory {
 	}
 
 	@Override
+	public @NotNull HashMap<Integer, ItemStack> removeItemAnySlot(@NotNull ItemStack... itemStacks) throws IllegalArgumentException {
+		return getInventory().removeItemAnySlot(itemStacks);
+	}
+
+	@Override
 	public @NotNull ItemStack[] getContents() {
 		return getInventory().getContents();
 	}
@@ -154,6 +159,11 @@ public class InventoryImpl implements Inventory {
 	}
 
 	@Override
+	public int close() {
+		return getInventory().close();
+	}
+
+	@Override
 	public @NotNull List<HumanEntity> getViewers() {
 		return getInventory().getViewers();
 	}
@@ -166,6 +176,11 @@ public class InventoryImpl implements Inventory {
 	@Override
 	public @Nullable InventoryHolder getHolder() {
 		return getInventory().getHolder();
+	}
+
+	@Override
+	public @Nullable InventoryHolder getHolder(boolean b) {
+		return getInventory().getHolder(b);
 	}
 
 	@Override

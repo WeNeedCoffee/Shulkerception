@@ -12,6 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.plugin.Plugin;
@@ -37,20 +39,26 @@ public class Shulkerception extends JavaPlugin {
 
 	public static boolean useNamedBoxes = true;
 	public static boolean useFormattedNamedBoxes = true;
-	public static NestedInventory createShulkerBoxInventory(ItemStack shulkerBoxItemStack, NestedInventory parent) {
+	public static NestedInventory createShulkerBoxInventory(int slot, ItemStack shulkerBoxItemStack, InventoryHolder parent) {
 
 		if (shulkerBoxItemStack.getItemMeta() instanceof BlockStateMeta) {
 			BlockStateMeta im = (BlockStateMeta) shulkerBoxItemStack.getItemMeta();
 			if (im.getBlockState() instanceof ShulkerBox) {
-				return new NestedInventory(parent, shulkerBoxItemStack);
+				if (parent instanceof  NestedInventory) {
+					return new NestedInventory((NestedInventory) parent, shulkerBoxItemStack, slot);
+				} else if (parent instanceof HumanEntity) {
+					return new NestedInventory(shulkerBoxItemStack, slot);
+				} else {
+					return new NestedInventory(parent, shulkerBoxItemStack, slot);
+				}
 			}
 		}
 		//should never happen, because function is only called for shulker boxes
 		return null;
 	}
 	
-	public static NestedInventory createShulkerBoxInventory(ItemStack shulkerBoxItemStack) {
-		return createShulkerBoxInventory(shulkerBoxItemStack, null);
+	public static NestedInventory createShulkerBoxInventory(int slot, ItemStack shulkerBoxItemStack) {
+		return createShulkerBoxInventory(slot, shulkerBoxItemStack, null);
 	}
 	
 	public static int getNestingDepth(ItemStack shulkerBox, int currentDepth) {

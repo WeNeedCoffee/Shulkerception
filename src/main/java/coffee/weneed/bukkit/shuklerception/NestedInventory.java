@@ -2,6 +2,7 @@ package coffee.weneed.bukkit.shuklerception;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -13,20 +14,49 @@ public class NestedInventory implements InventoryHolder {
 	private NestedInventory parent;
 	private Inventory inventory;
 	private boolean closed = false;
-	
-	
-	public NestedInventory(ItemStack shulker) {
-		this(null, shulker);
+	private InventoryHolder master;
+	private int slot = -1;
+	public void setSlot(int slot){
+		this.slot = slot;
 	}
-	
-	public NestedInventory(NestedInventory parent, ItemStack shulker) {
+	public int getSlot() {
+		return this.slot;
+	}
+	private void setMaster(InventoryHolder master) {
+		this.master = master;
+	}
+
+	public InventoryHolder getNestedMaster() {
+		if (getMaster() == null){
+			if (getParent() == null) {
+				return null; //why?
+			} else {
+				return getParent().getNestedMaster();
+			}
+		} else {
+			return getMaster();
+		}
+	}
+
+	public InventoryHolder getMaster() {
+		return master;
+	}
+	public NestedInventory(ItemStack shulker, int slot) {
+		this(null, shulker, slot);
+	}
+	public NestedInventory(InventoryHolder master, ItemStack shulker, int slot) {
+		this(null, shulker, slot);
+		setMaster(master);
+	}
+	public NestedInventory(NestedInventory parent, ItemStack shulker, int slot) {
 		setShulker(shulker);
 		setParent(parent);
+		setSlot(slot);
 		BlockStateMeta im = (BlockStateMeta) shulker.getItemMeta();
 		ShulkerBox shulkerstate = (ShulkerBox) im.getBlockState();
 		String name = shulker.getItemMeta().getDisplayName();
 		if (name.equals("")) {
-			name = shulker.getType().name();
+			name = "Shulker Box";
 		}
 		Inventory inv = Bukkit.createInventory(this, 27, name + Shulkerception.IDENTIFIER);
 		setInventory(inv);
@@ -55,11 +85,12 @@ public class NestedInventory implements InventoryHolder {
 		}
 	}
 
-	public boolean checkTree(ItemStack shulker) {
-		if (getShulker().equals(shulker)) {
+	public boolean checkTree(ItemStack shulker, int slot) {
+		System.out.print(slot + " " + getSlot());
+		if (getShulker().equals(shulker) && slot == getSlot()) {
 			return true;
 		} else if (getParent() != null) {
-			return getParent().checkTree(shulker);
+			return getParent().checkTree(shulker, slot);
 		}
 		return false;
 	}
