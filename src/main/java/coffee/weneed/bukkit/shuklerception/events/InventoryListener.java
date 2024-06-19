@@ -1,29 +1,20 @@
 package coffee.weneed.bukkit.shuklerception.events;
 
+import coffee.weneed.bukkit.shuklerception.NestedInventory;
+import coffee.weneed.bukkit.shuklerception.Shulkerception;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
-import coffee.weneed.bukkit.shuklerception.NestedInventory;
-import coffee.weneed.bukkit.shuklerception.Shulkerception;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.util.Vector;
 
 public class InventoryListener implements Listener {
 	//play shulker box close sound on Inventory close
@@ -44,8 +35,7 @@ public class InventoryListener implements Listener {
 	public void closeInventoryAnim(InventoryHolder inventory) {
 
 		if (!(inventory instanceof NestedInventory) || ((NestedInventory) inventory).getNestedMaster() == null) {
-			return;
-		}/*
+        }/*
 		BlockState state = ((NestedInventory) inventory).getNestedMaster().getInventory().getLocation().getWorld().getBlockAt(inventory.getInventory().getLocation()).getState();
 		if ((!(state instanceof Chest) && !(state instanceof DoubleChest))){
 			return;
@@ -63,8 +53,8 @@ public class InventoryListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onOpenInventory(InventoryOpenEvent event) {
 		String title = event.getView().getTitle();
-		if (!title.contains(Shulkerception.IDENTIFIER))
-			return;
+		if (!title.contains(Shulkerception.IDENTIFIER)) {
+        }
 
 
 	}
@@ -146,7 +136,7 @@ public class InventoryListener implements Listener {
 		}
 
 		if (event.getCurrentItem() != null && event.getCurrentItem().hasItemMeta() && event.getInventory().getHolder() instanceof NestedInventory){
-			if (NBTEditor.contains(event.getCurrentItem(), "BPIsBackPack") && NBTEditor.getBoolean(event.getCurrentItem(), "BPIsBackPack") == true){
+			if (NBTEditor.contains(event.getCurrentItem(), "BPIsBackPack") && NBTEditor.getBoolean(event.getCurrentItem(), "BPIsBackPack")){
 				event.setCancelled(true);
 			} else if (NBTEditor.contains(event.getCurrentItem(), "PublicBukkitValues", "slimefun:slimefun_item") && NBTEditor.getString(event.getCurrentItem(), "PublicBukkitValues", "slimefun:slimefun_item").toLowerCase().contains("backpack")){
 				event.setCancelled(true);

@@ -18,7 +18,7 @@ public enum Sound {
 		return values()[id];
 	}
 
-	private String[] versionDependentNames;
+	private final String[] versionDependentNames;
 
 	private org.bukkit.Sound cached = null;
 

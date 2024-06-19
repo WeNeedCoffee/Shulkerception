@@ -41,9 +41,8 @@ public class Shulkerception extends JavaPlugin {
 	public static boolean useFormattedNamedBoxes = true;
 	public static NestedInventory createShulkerBoxInventory(int slot, ItemStack shulkerBoxItemStack, InventoryHolder parent) {
 
-		if (shulkerBoxItemStack.getItemMeta() instanceof BlockStateMeta) {
-			BlockStateMeta im = (BlockStateMeta) shulkerBoxItemStack.getItemMeta();
-			if (im.getBlockState() instanceof ShulkerBox) {
+		if (shulkerBoxItemStack.getItemMeta() instanceof BlockStateMeta im) {
+            if (im.getBlockState() instanceof ShulkerBox) {
 				if (parent instanceof  NestedInventory) {
 					return new NestedInventory((NestedInventory) parent, shulkerBoxItemStack, slot);
 				} else if (parent instanceof HumanEntity) {
@@ -91,11 +90,11 @@ public class Shulkerception extends JavaPlugin {
 	}
 
 	// config and IO
-	private PluginDescriptionFile descFile = getDescription();
-	private PluginManager pm = getServer().getPluginManager();
+	private final PluginDescriptionFile descFile = getDescription();
+	private final PluginManager pm = getServer().getPluginManager();
 	private FileConfiguration config;
 
-	private Logger logger = getLogger();
+	private final Logger logger = getLogger();
 
 	//load config settings
 	public void loadConfiguration() {
