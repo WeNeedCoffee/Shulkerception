@@ -142,14 +142,19 @@ public class InventoryListener implements Listener {
 				event.setCancelled(true);
 			}
 		}
-		ItemStack shulkerBox = ((NestedInventory) event.getInventory().getHolder()).getShulker();
+		NestedInventory inv = (NestedInventory) event.getInventory().getHolder();
+		if (inv == null){
+			return;
+		}
 		if (event.getCurrentItem() != null && Shulkerception.supportedMaterials.contains(event.getCurrentItem().getType()) &&
 				(!Shulkerception.nesting ||
 						// prevent putting box inside itself (tests this by testing equal-ness for shulker boxes in hotbar
-						(((NestedInventory) event.getInventory().getHolder()).checkTree(event.getCurrentItem(), event.getSlot()) && event.getRawSlot() >= 54))) {
+						(inv.checkTree(event.getCurrentItem(), event.getSlot()) && event.getRawSlot() >= 54))) {
 			event.setCancelled(true);
 			return;
 		}
+
+		ItemStack shulkerBox = ((NestedInventory) event.getInventory().getHolder()).getShulker();
 		// prevent duplication exploits on laggy servers by closing Inventory if no shulker box in hand on Inventory click
 		if (shulkerBox == null) {
 			return;
